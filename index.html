@@ -103,32 +103,35 @@
           /* PUT ANY CHANGES TO THE JAVASCRIPT HERE  */
 		drawImageIOSFix(context2,img, 0, 0, img.naturalWidth, img.naturalHeight, 0, 0, 600, 500); //draw og image onto second canvas
     var imageData = context.getImageData(0, 0, 600, 500); //grabs the image from above
-				var data = imageData.data;
+		          /* Extract pixel data from first canvas */
+    var data = imageData.data;
 				 
-var totalR = 0;
-var totalG = 0;
-var totalB = 0;
-var pixelCount = data.length / 4;
+    var totalR = 0;
+    var totalG = 0;
+    var totalB = 0;
+/* Each pixel = 4 values (R, G, B, Alpha) */
+
+    var pixelCount = data.length / 4;
 
 // Loop through pixels and sum colors
 for (var i = 0; i < data.length; i += 4) {
-totalR += data[i];
-totalG += data[i + 1];
-totalB += data[i + 2];
+  totalR += data[i];    //Red
+  totalG += data[i + 1];  // Green
+  totalB += data[i + 2];  // Blue
 }
 
 // Get average color values
-var avgR = totalR / pixelCount;
-var avgG = totalG / pixelCount;
-var avgB = totalB / pixelCount;
+  var avgR = totalR / pixelCount;
+  var avgG = totalG / pixelCount;
+  var avgB = totalB / pixelCount;
 
 // diagnostic logic
-var result = "";
+  var result = "";
 
-if (avgR > avgG && avgR > avgB) {
-result = "Negative (Pink)";
+  if (avgR > avgG && avgR > avgB) {
+  result = "Negative (Pink)";
 } else if (avgR > 150 && avgG > 150 && avgB < 100) {
-result = "Positive (Yellow)";
+   result = "Positive (Yellow)";
 } else {
 result = "Positive";
 }
