@@ -104,7 +104,7 @@
           drawImageIOSFix(context2, img, 0, 0, img.naturalWidth, img.naturalHeight, 0, 0, 600, 500);
 
           /* +++++++++++++++ BEGIN IMAGE PROCESSING +++++++++++++++ */
-          var imageData = context.getImageData(0, 0, 600, 500);
+          var imageData = context.getImageData(0, 0, img.naturalWidth, img.naturalHeight);
           var data = imageData.data;
           var totalR = 0;
           var totalG = 0;
