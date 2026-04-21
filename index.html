@@ -106,52 +106,54 @@
           /* +++++++++++++++ BEGIN IMAGE PROCESSING +++++++++++++++ */
           var imageData = context.getImageData(0, 0, img.naturalWidth, img.naturalHeight);
           var data = imageData.data;
-          var totalR = 0;
-          var totalG = 0;
-          var totalB = 0;
-          var pixelCount = data.length / 4;
+ var data = imageData.data;
+      var totalPink = 0;
+      var totalYellow = 0;
+      var totalPixels = data.length / 4;
+      for (var i = 0; i < data.length; i+=4) { //loop for changing each pixel
+        var r = data[i];
+        var g = data[i+1];
+        var b = data[i+2];
 
-          for (var i = 0; i < data.length; i += 4) {
-            totalR += data[i];     // Red
-            totalG += data[i + 1]; // Green
-            totalB += data[i + 2]; // Blue
-          }
+        //yellow means it is positive
+        if (r > 180 && g > 180 && b < 120 && Math.abs(r - g) < 50) {
+          data[i] = 255; //yellow red
+          data[i + 1] = 255; //yellow green
+          data[i + 2] = 0; //no blue
+          totalYellow++;
+        }
+        //pink means it is negative
+        else if (r > 150 && b > 100 && g < 160) {
+          data[i] = 255; //pink red
+          data[i + 1] = 80; //low green
+          data[i + 2] = 180; //high blue
+          totalPink++;
+        }
+        else {
+          var avg = (r + g + b) / 3;
+          data[i] = data[i + 1] = data[i + 2] = avg / 5; //darken everything else
+        }
+      }  
+      console.log("Image processed"); //javascript debugging console
 
-          var avgR = totalR / pixelCount;
-          var avgG = totalG / pixelCount;
-          var avgB = totalB / pixelCount;
+      secondCtx.putImageData(imageData, 0, 0);//display data on 2nd console
 
-// diagnostic logic
-  var result = "";
+      var ratio = (totalYellow / totalPixels) * 100;
+      if (ratio > 5) {
+        messageDisplayArea.style.color = "green";
+        messageDisplayArea.innerHTML += "(POSITIVE)";
+      } else {
+        messageDisplayArea.style.color = "red";
+        messageDisplayArea.innerHTML += "(NEGATIVE)";
+      }
 
-if (avgR > 150 && avgG > 150 && avgB < 100) {
-	result = "Positive (Yellow)";
-}
-	else if (avgR > avgG && avgR > avgB) {
-		result = "Negative (Pink)";
-	}
-	else {
-		result = "Unclear";
-	}
-
-
-// Display result
-messageDisplayArea.innerHTML = "Diagnostic Result: " + result;
-			context2.putImageData(imageData, 0, 0);
-        // end of img.onload
-					
-				}
-
-				// Update the canvas with the new grayscale pixel data
-	
-        
-        img.src = reader.result;
-      } //  end of reader.onload
+      }; // end of img.onload
+      img.src = reader.result;
+      }//  end of reader.onload
       
       reader.readAsDataURL(file);
     } // end of the if statement checking that file is an image
-    else
-    {
+    else {
       // this is what happens if the orignial file selected is not an image file
       messageDisplayArea.innerHTML = "File not supported!"
     } // end of the else statement if file in NOT an image
@@ -159,6 +161,7 @@ messageDisplayArea.innerHTML = "Diagnostic Result: " + result;
  } // end of the window.onload function
  </script>
  </head>
+
 
  <body>
   <div data-role="page">
