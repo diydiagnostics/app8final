@@ -93,61 +93,55 @@
         /* new Image() and img.onload start some kind of new image creation process in javaScript. I do not understand why this is necessary although it may simply slow things down to let the image load. */
         var img = new Image();
         img.onload = function() {
-          // 1. Clear the placeholder text by filling the canvas or just drawing over it
-          context.clearRect(0, 0, canvas.width, canvas.height);
-          context2.clearRect(0, 0, canvas2.width, canvas2.height);
+  context.clearRect(0, 0, canvas.width, canvas.height);
+  secondCtx.clearRect(0, 0, canvas2.width, canvas2.height);
 
-          // 2. Draw the image to the first canvas
-          drawImageIOSFix(context, img, 0, 0, img.naturalWidth, img.naturalHeight, 0, 0, 600, 500);
+  drawImageIOSFix(context, img, 0, 0, img.naturalWidth, img.naturalHeight, 0, 0, 600, 500);
+  drawImageIOSFix(secondCtx, img, 0, 0, img.naturalWidth, img.naturalHeight, 0, 0, 600, 500);
 
-          // 3. Draw the image to the second canvas 
-          drawImageIOSFix(context2, img, 0, 0, img.naturalWidth, img.naturalHeight, 0, 0, 600, 500);
+  var imageData = context.getImageData(0, 0, 600, 500);
+  var data = imageData.data;
 
-          /* +++++++++++++++ BEGIN IMAGE PROCESSING +++++++++++++++ */
-          var imageData = context.getImageData(0, 0, img.naturalWidth, img.naturalHeight);
-          var data = imageData.data;
- var data = imageData.data;
-      var totalPink = 0;
-      var totalYellow = 0;
-      var totalPixels = data.length / 4;
-      for (var i = 0; i < data.length; i+=4) { //loop for changing each pixel
-        var r = data[i];
-        var g = data[i+1];
-        var b = data[i+2];
+  var totalPink = 0;
+  var totalYellow = 0;
+  var totalPixels = data.length / 4;
 
-        //yellow means it is positive
-        if (r > 180 && g > 180 && b < 120 && Math.abs(r - g) < 50) {
-          data[i] = 255; //yellow red
-          data[i + 1] = 255; //yellow green
-          data[i + 2] = 0; //no blue
-          totalYellow++;
-        }
-        //pink means it is negative
-        else if (r > 150 && b > 100 && g < 160) {
-          data[i] = 255; //pink red
-          data[i + 1] = 80; //low green
-          data[i + 2] = 180; //high blue
-          totalPink++;
-        }
-        else {
-          var avg = (r + g + b) / 3;
-          data[i] = data[i + 1] = data[i + 2] = avg / 5; //darken everything else
-        }
-      }  
-      console.log("Image processed"); //javascript debugging console
+  for (var i = 0; i < data.length; i+=4) {
+    var r = data[i];
+    var g = data[i+1];
+    var b = data[i+2];
 
-      secondCtx.putImageData(imageData, 0, 0);//display data on 2nd console
+    if (r > 180 && g > 180 && b < 120 && Math.abs(r - g) < 50) {
+      data[i] = 255;
+      data[i+1] = 255;
+      data[i+2] = 0;
+      totalYellow++;
+    }
+    else if (r > 150 && b > 100 && g < 160) {
+      data[i] = 255;
+      data[i+1] = 80;
+      data[i+2] = 180;
+      totalPink++;
+    }
+    else {
+      var avg = (r + g + b) / 3;
+      data[i] = data[i+1] = data[i+2] = avg / 5;
+    }
+  }
 
-      var ratio = (totalYellow / totalPixels) * 100;
-      if (ratio > 5) {
-        messageDisplayArea.style.color = "green";
-        messageDisplayArea.innerHTML += "(POSITIVE)";
-      } else {
-        messageDisplayArea.style.color = "red";
-        messageDisplayArea.innerHTML += "(NEGATIVE)";
-      }
+  console.log("Image processed");
+  secondCtx.putImageData(imageData, 0, 0);
 
-      }; // end of img.onload
+  var ratio = (totalYellow / totalPixels) * 100;
+  if (ratio > 5) {
+    messageDisplayArea.style.color = "green";
+    messageDisplayArea.innerHTML += "(POSITIVE)";
+  } else {
+    messageDisplayArea.style.color = "red";
+    messageDisplayArea.innerHTML += "(NEGATIVE)";
+  }
+};
+ // end of img.onload
       img.src = reader.result;
       }//  end of reader.onload
       
