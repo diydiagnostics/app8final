@@ -93,37 +93,33 @@
         /* new Image() and img.onload start some kind of new image creation process in javaScript. I do not understand why this is necessary although it may simply slow things down to let the image load. */
         var img = new Image();
         img.onload = function() {
-          /*This finally draws the image onto the first drawing canvas. The specific canvas is referred to by "context". This is established down in the HTML part of the file just under the first <canvas> tag. If we weren't worried about fixing an iPhone bug we would use context.drawImage(image, 0, 0, img.naturalWidth, img.naturalHeight, 0, 0, 600, 500) instead of drawImageIOSFix */
-        
-          drawImageIOSFix(context,img, 0, 0, img.naturalWidth, img.naturalHeight, 0, 0, 600, 500);
+          // 1. Clear the placeholder text by filling the canvas or just drawing over it
+          context.clearRect(0, 0, canvas.width, canvas.height);
+          context2.clearRect(0, 0, canvas2.width, canvas2.height);
 
-          /*  +++++++++++++++ BEGIN IMAGE PROCESSING +++++++++++++++ */
-          /*  ++++++++++++++++++++++++++++++++++++++++++++++++++++++ */
+          // 2. Draw the image to the first canvas
+          drawImageIOSFix(context, img, 0, 0, img.naturalWidth, img.naturalHeight, 0, 0, 600, 500);
 
-          /* PUT ANY CHANGES TO THE JAVASCRIPT HERE  */
-		drawImageIOSFix(context2,img, 0, 0, img.naturalWidth, img.naturalHeight, 0, 0, 600, 500); //draw og image onto second canvas
-    var imageData = context.getImageData(0, 0, 600, 500); //grabs the image from above
-		          /* Extract pixel data from first canvas */
-    var data = imageData.data;
-				 
-    var totalR = 0;
-    var totalG = 0;
-    var totalB = 0;
-/* Each pixel = 4 values (R, G, B, Alpha) */
+          // 3. Draw the image to the second canvas 
+          drawImageIOSFix(context2, img, 0, 0, img.naturalWidth, img.naturalHeight, 0, 0, 600, 500);
 
-    var pixelCount = data.length / 4;
+          /* +++++++++++++++ BEGIN IMAGE PROCESSING +++++++++++++++ */
+          var imageData = context.getImageData(0, 0, 600, 500);
+          var data = imageData.data;
+          var totalR = 0;
+          var totalG = 0;
+          var totalB = 0;
+          var pixelCount = data.length / 4;
 
-// Loop through pixels and sum colors
-for (var i = 0; i < data.length; i += 4) {
-  totalR += data[i];    //Red
-  totalG += data[i + 1];  // Green
-  totalB += data[i + 2];  // Blue
-}
+          for (var i = 0; i < data.length; i += 4) {
+            totalR += data[i];     // Red
+            totalG += data[i + 1]; // Green
+            totalB += data[i + 2]; // Blue
+          }
 
-// Get average color values
-  var avgR = totalR / pixelCount;
-  var avgG = totalG / pixelCount;
-  var avgB = totalB / pixelCount;
+          var avgR = totalR / pixelCount;
+          var avgG = totalG / pixelCount;
+          var avgB = totalB / pixelCount;
 
 // diagnostic logic
   var result = "";
