@@ -166,33 +166,30 @@
  <body>
   <div data-role="page">
     <div data-role="header">
-    <h1>Primary Colors</h1></div><!-- /header -->
+    <h1>LAMP Result Analysis</h1></div><!-- /header -->
     <div data-role="content">	
-      <h2>Push button to take picture.</h2>
+      <h2>Please make sure that you take the image of your samples on a white background, and input a screenshot of each sample individually zooming in on just the sample and excluding any other part of the tube.</h2>
       <div>
-        Press orange button to create or choose image file:
+        Press orange button to choose image file:
         <input type="file" id="fileInput" STYLE="background-color: #FF6600;">
       </div>
       <div id="messageDisplayArea"></div>
-<br><br>
+      <!-- this is the first page with the orginal image-->
       <canvas id="myCanvas" width=600 height=500 style="border:1px solid #d3d3d3;"></canvas>
-		
-      <script> /* initiates the canvas and puts the text on the canvas "myCanvas" */
-        var canvas = document.getElementById('myCanvas');//these codes create the 1st canvas 
+      <canvas id="dataCanvas" width="600" height="500" style="border:1px solid #d3d3d3;"></canvas> <!--second canvas-->
+      <script> /* This script initiates the cavas and puts the text on the canvas "myCanvas" */
+        var canvas = document.getElementById('myCanvas');
         var context = canvas.getContext("2d");
         context.font = '20pt Calibri';
         context.fillStyle = "black";
         context.fillText("Original image will go here", 10, 20);
+        var secondCanvas = document.getElementById('dataCanvas'); //second canvas
+        var secondCtx = secondCanvas.getContext("2d");
+        secondCtx.font = '20pt Calibri';
+        secondCtx.fillStyle = "black";
+        secondCtx.fillText("Modified image will go here", 10, 20); //brief identifying text
       </script>
-     
-    <canvas id="myCanvas2" width=600 height=500 style="border:1px solid #d3d3d3;"></canvas>
-    <script> /* This script initiates the cavas and puts the text on the canvas "myCanvas" */
-        var canvas2 = document.getElementById('myCanvas2'); //This creates the 2nd canvas, realized that the number 2 is required.
-        var context2 = canvas2.getContext("2d");
-        context2.font = '20pt Calibri';//establishes font
-        context2.fillStyle = "black";//establishes color 
-        context2.fillText("Analyzed image will go here", 10, 20);//estabishes where image goes on canvas
-      </script>
+
 
     </div><!-- /content -->
     <div data-role="footer" data-position="fixed">
