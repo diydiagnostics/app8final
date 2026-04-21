@@ -105,7 +105,9 @@
 		drawImageIOSFix(secondCtx,img, 0, 0, img.naturalWidth, img.naturalHeight, 0, 0, 600, 500); //draw og image onto second canvas
     var imageData = context.getImageData(0, 0, 600, 500); //grabs the image from above
 				var data = imageData.data;
-
+				  var totalPink = 0;
+      				var totalYellow = 0;
+     				 var totalPixels = data.length / 4;
 				// Loop through the pixel data and convert each pixel to show only blue pixels
 				for (var i = 0; i < data.length; i += 4) {
 					var r = data[i]; //variable for red pixels data
