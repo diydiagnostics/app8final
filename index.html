@@ -14,7 +14,7 @@
  
   Authors in chronological order of contribution:
   Author 1: Timothy E. Riedel
-  Author 2: Workblock Tuesday 8-11am (Meera Menon, Jayden Bihl, Anya Gudipati, Jennifer Nguyen, Mariam Hamouie
+  Author 2: Workblock Tuesday 8-11am (Meera Menon, Jayden Bihl, Anya Gudipati, Jennifer Nguyen, Mariam Hamouie, Yusroh Salami)
   
   References:
   http://docs.webplatform.org/wiki/concepts/programming/drawing_images_onto_canvas#Loading_the_image_programmatically
@@ -49,54 +49,54 @@ This is a proof-of-concept only.
 
 <head>
   <meta charset="utf-8">
-  <title>LAMP Diagnostic Analyzer</title>
+  <title>LAMP Diagnostic Analyzer</title> <!--this is the title-->
 
   <!-- Mobile-friendly setup -->
-  <meta name="viewport" content="width=device-width, initial-scale=.7">
+  <meta name="viewport" content="width=device-width, initial-scale=.7"> 
 
   <!-- Mobile (for styling) -->
-  <link rel="stylesheet" href="https://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.css" />
+  <link rel="stylesheet" href="https://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.css" /> <!--this block is included for stylistic purposes-->
   <script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
   <script src="https://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.js"></script>
 
   <script>
     // Run after page loads
-    window.onload = function () {
+    window.onload = function () { //this function defines what should happen when the window loads
 
-      var fileInput = document.getElementById('fileInput');
-      var messageDisplayArea = document.getElementById('messageDisplayArea');
+      var fileInput = document.getElementById('fileInput'); //this calls the document when we upload it 
+      var messageDisplayArea = document.getElementById('messageDisplayArea'); //this determines where the message will be displayed on the screen 
 
       // When user uploads image
-      fileInput.addEventListener('change', function () {
+      fileInput.addEventListener('change', function () { 
 
-        var file = fileInput.files[0];
+        var file = fileInput.files[0]; //this refers to the option for users to upload an image file 
 
         // Check if file is an image
         if (!file.type.match("image.*")) {
-          messageDisplayArea.innerHTML = "Please upload an image file.";
+          messageDisplayArea.innerHTML = "Please upload an image file."; //displays text that reminds users to upload an image file
           return;
         }
 
         // Read file
-        var reader = new FileReader();
+        var reader = new FileReader();  //creates a variable for the file readers, which basically means that it will analyze the contents of the image 
 
-        reader.onload = function () {
+        reader.onload = function () { //this tells the code what to do when the file reader loads 
 
-          messageDisplayArea.innerHTML = "Processing image...";
+          messageDisplayArea.innerHTML = "Processing image..."; //text indicates that the code is processing the image 
 
           var img = new Image();
 
-          img.onload = function () {
+          img.onload = function () { //tells the code what to do when the image loads 
 
             // Clear both canvases
-            context.clearRect(0, 0, canvas.width, canvas.height);
-            secondCtx.clearRect(0, 0, secondCanvas.width, secondCanvas.height);
+            context.clearRect(0, 0, canvas.width, canvas.height); //width and height of first rectangle, which will be the first canvas
+            secondCtx.clearRect(0, 0, secondCanvas.width, secondCanvas.height); //defines width and height of the second rectangle which will be the second canvas
 
             // Draw image to canvas
-            context.drawImage(img, 0, 0, 600, 500);
+            context.drawImage(img, 0, 0, 600, 500); //defines the borders of the iamge 
 
             // Get pixel data
-            var imageData = context.getImageData(0, 0, 600, 500);
+            var imageData = context.getImageData(0, 0, 600, 500); //defines location/borders 
             var data = imageData.data;
 
             // Variables to store total colors
@@ -163,30 +163,30 @@ This is a proof-of-concept only.
       <input type="file" id="fileInput" style="background-color: #FF6600;">
 
       <!-- Output -->
-      <div id="messageDisplayArea"></div>
+      <div id="messageDisplayArea"></div> 
 
       <!-- Original Image -->
-      <canvas id="myCanvas" width="600" height="500" style="border:1px solid black;"></canvas>
+      <canvas id="myCanvas" width="600" height="500" style="border:1px solid black;"></canvas> <!--stylistic aspects of the canvas-->
 
       <!-- Processed Image -->
-      <canvas id="dataCanvas" width="600" height="500" style="border:1px solid black;"></canvas>
+      <canvas id="dataCanvas" width="600" height="500" style="border:1px solid black;"></canvas> <!--stylistic aspects of the canvas-->
 
       <script>
         // Setup first canvas
-        var canvas = document.getElementById('myCanvas');
-        var context = canvas.getContext("2d");
-        context.fillText("Original image will appear here", 10, 20);
+        var canvas = document.getElementById('myCanvas'); //names the variable myCanvas
+        var context = canvas.getContext("2d"); //defines canvas as 2d 
+        context.fillText("Original image will appear here", 10, 20); //displays text that says that the original image will appear there 
 
         // Setup second canvas
-        var secondCanvas = document.getElementById('dataCanvas');
-        var secondCtx = secondCanvas.getContext("2d");
-        secondCtx.fillText("Processed image will appear here", 10, 20);
+        var secondCanvas = document.getElementById('dataCanvas'); //calls the element
+        var secondCtx = secondCanvas.getContext("2d"); //defines the second canvas to be 2d 
+        secondCtx.fillText("Processed image will appear here", 10, 20); //indicates that our processed image will appear below, gives location
       </script>
 
     </div>
 
     <div data-role="footer">
-      <p>DIY Diagnostics - UT Austin FRI</p>
+      <p>DIY Diagnostics - UT Austin FRI</p> <!--this provides text for the footer-->
     </div>
 
   </div>
